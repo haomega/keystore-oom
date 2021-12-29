@@ -13,6 +13,11 @@ import java.util.stream.IntStream;
 
 public class App {
     public static void main(String[] args) {
+        /*
+        运行前，最好设置JVM参数
+            -Xms256m -Xmx256m  （更快OOM）
+            -XX:+HeapDumpOnOutOfMemoryError  （OOM时，生成dump文件）
+         */
         Provider provider = new BouncyCastleProvider();
         // 无界流
         IntStream.iterate(0, i -> i + 1)
