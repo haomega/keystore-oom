@@ -29,17 +29,20 @@ public class App {
                             System.out.print("key file load times: " + i + " ");
                             printJvmStat();
                         }
-                    } catch (KeyStoreException | CertificateException | IOException | NoSuchAlgorithmException e) {
+                    } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     }
                 });
     }
 
-    public static void keyFileLoad(Provider provider) throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+    public static void keyFileLoad(Provider provider) throws KeyStoreException, CertificateException, NoSuchAlgorithmException {
         KeyStore ks = KeyStore.getInstance("PKCS12", provider);
-        InputStream keyFileInput = App.class.getClassLoader().getResourceAsStream("user-rsa.p12");
-        String password = "111111";
-        ks.load(keyFileInput, password.toCharArray());
+        try (InputStream keyFileInput = App.class.getClassLoader().getResourceAsStream("user-rsa.p12")) {
+            String password = "111111";
+            ks.load(keyFileInput, password.toCharArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void printJvmStat() {
